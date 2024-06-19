@@ -1,0 +1,25 @@
+/* movie_detail.css */
+.movie-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.movie-info {
+    flex: 1;
+    margin-right: 20px; /* Adjust the margin as needed */
+}
+
+.cinemas {
+    flex: 1;
+}
+
+.cinema-card, .hall-card {
+    transition: transform 0.2s;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cinema-card:hover, .hall-card:hover {
+    transform: scale(1.005);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}

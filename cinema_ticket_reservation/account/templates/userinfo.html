@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body class="dashboard-body">
+    <section class="ftco-section d-flex align-items-center min-vh-100" style="background: url('{% static 'images/login_bg.webp' %}') no-repeat center center/cover;">
+        <div class="container" style="max-width: 1200px; background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);">
+            <div class="row mb-4">
+                <div class="col text-center">
+                    <h2 class="heading-section">داشبورد</h2>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-4 text-center">
+                    <a href="{% url 'account:userinfo' %}" class="btn btn-outline-primary btn-block">اطلاعات کاربر</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <a href="{% url 'account:user-tickets' %}" class="btn btn-outline-primary btn-block">بلیت‌های سفارش داده شده</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <a href="{% url 'account:logout' %}" class="btn btn-outline-danger btn-block">خروج</a>
+                </div>
+            </div>
+            <div class="row">
+                <main role="main" class="col-12">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2 text-primary">اطلاعات کاربر</h1>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-primary mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">جزئیات کاربر</h5>
+                                    <p class="card-text"><strong class="text-success">نام کاربری:</strong> {{ user.username }}</p>
+                                    <p class="card-text"><strong class="text-success">ایمیل:</strong> {{ user.email }}</p>
+                                    <p class="card-text"><strong class="text-success">شماره تلفن:</strong> <span id="phoneNumber">{{ user.profile.phone_number }}</span></p>
+                                    <button class="btn btn-info btn-sm mt-3" id="showPhoneNumberBtn">نمایش شماره تلفن</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-primary mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">بلیت‌های سفارش داده شده</h5>
+                                    <ul class="list-group">
+                                        {% for ticket in user.ticket_set.all %}
+                                            {% if not ticket.is_canceled %}
+                                            <li class="list-group-item">
+                                                <strong>کد بلیت:</strong> {{ ticket.Ticket_ID }}<br>
+                                                <strong>صندلی‌ها:</strong> {{ ticket.seats.all|join:", " }}<br>
+                                                <strong>زمان رزرو:</strong> {{ ticket.time_on_reserve }}<br>
+                                                <strong>وضعیت:</strong> {{ ticket.is_canceled|yesno:"لغو شده,فعال" }}
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <style>
+        .dashboard-body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .heading-section {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            color: #333;
+        }
+        .btn-outline-primary, .btn-outline-danger {
+            border-radius: 30px;
+            padding: 10px 20px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            $('#showPhoneNumberBtn').click(function() {
+                alert('شماره تلفن: {{ user.profile.phone_number }}');
+            });
+        });
+    </script>
+</body>
+{% endblock %}

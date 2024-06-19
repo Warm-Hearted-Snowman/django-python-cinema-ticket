@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{%load static%}
+{% block content %}
+<body style="background-image: url({% static 'images/bg03.jpg' %}); background-size: cover;">
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section">Dashboard</h2>
+            </div>
+        </div>
+        <form class="signin-form">
+                <div class="form-group d-md-flex">
+                    <div class="w-50 text-md-left">
+                        <a href="{% url 'account:userinfo' %}">User Info</a>
+                    </div>
+                    <div class="w-50 text-md-center">
+                        <a href="{% url 'account:user-tickets' %}">Ordered Tickets</a>
+                    </div>
+                    <div class="w-50 text-md-right">
+                        <a href="{% url 'account:logout' %}">Log Out</a>
+                    </div>
+
+                </div>
+            </form>
+        <div class="row">
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                </div>
+                <!-- Your main content goes here -->
+                <p>Welcome to your dashboard!</p>
+            </main>
+        </div>
+    </div>
+</section>
+
+<!-- Optional: Font Awesome Icons -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+
+<!-- Optional: jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<script>
+    // Optional: Highlight the active link in the sidebox
+    $(document).ready(function () {
+      const currentPath = window.location.pathname;
+      $('.nav-link').each(function () {
+        const linkPath = $(this).attr('href');
+        if (currentPath === linkPath) {
+          $(this).addClass('active');
+        }
+      });
+    });
+</script>
+</body>
+{% endblock %}

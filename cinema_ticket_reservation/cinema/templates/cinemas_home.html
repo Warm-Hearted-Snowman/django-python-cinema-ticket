@@ -1,0 +1,36 @@
+{% extends "cinema_base.html" %}
+
+{% block title %}Cinemas List{% endblock %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href=" {% static 'css/cinemas_home.css' %}">
+{% endblock %}
+
+{% block content %}
+{% for cinema in cinemas %}
+<div class="cinemabox">
+    <div class="cinema__detail">
+        <div class="Topcinema">
+            <a href="{% url 'cinema:cinema_detail' cinema_id=cinema.Cinema_ID %}" class="cinema__title"> {{ cinema.title }} </a>
+            <a href="{% url 'cinema:cinema_detail' cinema_id=cinema.Cinema_ID %}" class="cinema__link"> مشاهده جزئیات </a>
+        </div>
+        <div class="cinema__rate">
+            <span class="cinema__rate-number">{{ cinema.rating }}</span>
+            <img class="cinema__rate-icon" src="{% static 'images/star.png' %}">
+        </div>
+        <div class="location">
+            <h3 class="location_name"> موقعیت:</h3>
+            <h3 class="location__address">{{ cinema.address }}</h3>
+        </div>
+        <h3 class="description_title"> توضیحات:</h3>
+        <p class="cinema_description">{{ cinema.info }}</p>
+    </div>
+    <div class="pic_cinema">
+        <img class="cinema_img" src=" {{ movie.image.url }} " alt="Cinema 1">
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}رزرو بلیط{% endblock %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/reserve_ticket_tmp.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<style>
+    .container {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .movie-container {
+        margin-bottom: 20px;
+    }
+    .seat-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .seat-row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .seat {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        margin: 3px;
+    }
+    .seat.selected {
+        background-color: #5cb85c;
+        color: #fff;
+    }
+    .seat.occupied {
+        background-color: #ccc;
+        pointer-events: none;
+    }
+    .screen {
+        background-color: #ccc;
+        height: 50px;
+        width: 100%;
+        margin: 15px 0;
+    }
+    .text {
+        margin-top: 20px;
+    }
+</style>
+<body>
+<div class="container">
+    <h1>رزرو بلیط</h1>
+    <div class="movie-container">
+        <p><strong>Hall:</strong> {{ schedule.hall_id }}</p>
+        <p><strong>Time:</strong> {{ schedule.time }}</p>
+    </div>
+    <div class="screen"></div>
+    <form method="post" id="reservationForm" action="{% url 'ticket:reserve_ticket' schedule_id=schedule.Schedule_ID %}">
+        {% csrf_token %}
+        <div class="seat-container">
+            {% for seats_in_row in available_seats %}
+            <div class="seat-row">
+                {% for seat in seats_in_row %}
+                <div class="seat {% if seat.status == 'Booked' %}occupied{% endif %}" data-seat-id="{{ seat.Seat_ID }}">
+                    <input type="checkbox" name="selected_seats" value="{{ seat.Seat_ID }}" id="seat_{{ seat.Seat_ID }}" style="display: none;">
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        <p class="text">شما تا الان <span id="count">0</span> صندلی به قیمت $<span id="price">0</span> انتخاب کرده اید</p>
+        <button type="submit" class="btn btn-primary">رزرو بلیط</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="{% static 'js/reserve_ticket_tmp.js' %}"></script>
+{% endblock %}

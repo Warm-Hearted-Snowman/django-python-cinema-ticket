@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.title }}{% endblock %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/Movie_detail_tmp.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+<div class="moviebox">
+    <div class="movie_detail">
+        <h3 class="movie_title"> {{ movie.title }}</h3>
+        <div class="movie_genre">
+            <h3 class="genre_title"> ژانر: </h3>
+            <h3 class="genre"> {{ movie.genre }} </h3>
+        </div>
+        <div class="movie_time">
+            <h3 class="number_time"> {{ movie.length }} </h3>
+            <h3 class="minutes"> دقیقه </h3>
+        </div>
+        <h3 class="story_title"> خلاصه فیلم:</h3>
+        <p class="movie_story">{{ movie.description }}</p>
+    </div>
+    <div class="pic__movie">
+        <img class="movie__img" src="{{ movie.image.url }}" alt="Movie 1">
+    </div>
+</div>
+
+<div class="newest">
+    <h3 class="newest_title"> بهترین سینماها </h3>
+    <a class="section__link"> نمایش همه </a>
+</div>
+<div class="row">
+    {% for cinema in related_cinemas %}
+    <div class="movie_card">
+        <img class="movie__img" src="{{ cinema.image.url }}" alt="{{ cinema.title }}">
+        <div class="movie__title">
+            <a href="{% url 'cinema:cinema_detail' cinema_id=cinema.Cinema_ID %}" class="movie__name">{{ cinema.title }}</a>
+            <div class="movie__detail">
+                <p class="cinema_details">{{ cinema.city }}</p>
+                <div class="cinema_details">
+                    <span class="movie__rating-number">{{ cinema.rating }}</span>
+                    <img class="movie__rate-icon" src="{% static 'images/star.png' %}">
+                </div>
+            </div>
+        </div>
+        <!-- Accordion for halls and showtimes -->
+        <div class="cinema-container">
+            {% for cinema_id, halls in cinema_halls.items %}
+            {% if cinema_id == cinema.Cinema_ID %}
+            <div class="cinema-card" data-cinema-id="{{ cinema_id }}">مشاهده سانس ها</div>
+            <div id="accordionCinema{{ cinema_id }}" class="accordion-container" style="display: none;">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingCinema{{ cinema_id }}">
+                        <button class="accordion-button" type="button" aria-expanded="false">
+                            سالن‌ها
+                        </button>
+                    </h2>
+                    <div id="collapseCinema{{ cinema_id }}" class="accordion-collapse collapse"
+                         aria-labelledby="headingCinema{{ cinema_id }}">
+                        <div class="accordion-body">
+                            {% for hall in halls %}
+                            <div>
+                                <h3>سالن {{ hall.hall_id }}</h3>
+                                <p>زمان نمایش: {{ hall.time }}</p>
+                                <a href="{% url 'ticket:reserve_ticket' schedule_id=hall.Schedule_ID %}" class="btn btn-primary">رزرو بلیط</a>
+                            </div>
+                            <hr>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+<div class="newest">
+    <h3 class="newest_title"> فیلم های مشابه </h3>
+    <a class="section__link"> نمایش همه </a>
+</div>
+<div class="row">
+    {% for similar_movie in similar_movies %}
+    <div class="movie_card">
+        <img class="movie__img" src="{{ similar_movie.image.url }}" alt="{{ similar_movie.title }}">
+        <div class="movie__title">
+            <a href="{% url 'movie:movie_detail' movie_id=similar_movie.Movie_ID %}" class="movie__name">{{ similar_movie.title }}</a>
+            <div class="movie__detail">
+                <p class="movie__genre">{{ similar_movie.genre }}</p>
+                <div class="movie__rating">
+                    <span class="movie__rating-number">{{ similar_movie.rating }}</span>
+                    <img class="movie__rate-icon" src="{% static 'images/star.png' %}">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</body>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/movie_detail.js' %}"></script>
+{% endblock %}

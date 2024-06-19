@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<body class="login-body">
+    <section class="ftco-section d-flex align-items-center min-vh-100" >
+        <div class="container" style="max-width: 800px; background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);background: url('{% static 'images/login_bg.webp' %}') no-repeat center center/cover;">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center mb-4">
+                    <h2 class="heading-section">ورود</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="login-wrap p-4 p-md-5 bg-light rounded shadow">
+                        <h3 class="mb-4 text-center">حساب کاربری دارید؟</h3>
+                        <form action="{% url 'account:login' %}" method="post" class="signin-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="username" class="form-control" placeholder="نام کاربری" required aria-label="نام کاربری">
+                            </div>
+                            <div class="form-group position-relative">
+                                <input id="password-field" type="password" name="password" class="form-control" placeholder="رمز عبور" required aria-label="رمز عبور">
+                                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password position-absolute"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary submit px-3">ورود</button>
+                            </div>
+                            <div class="form-group d-flex justify-content-between">
+                                <a href="{% url 'account:register' %}">ثبت نام کاربر جدید</a>
+                                <a href="{% url 'account:password_reset' %}" class="text-muted">فراموشی رمز عبور</a>
+                            </div>
+                        </form>
+                        <p class="text-center my-3">&mdash; یا ورود با &mdash;</p>
+                        <div class="social d-flex justify-content-center">
+                            <a href="#" class="btn btn-outline-primary mx-1 px-3 py-2 rounded"><span class="fab fa-facebook-f"></span></a>
+                            <a href="#" class="btn btn-outline-info mx-1 px-3 py-2 rounded"><span class="fab fa-twitter"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <style>
+        .login-body {
+            background-color: #f8f9fa;
+        }
+        .login-wrap {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+        }
+        .form-control {
+            border-radius: 30px;
+            padding: 20px;
+        }
+        .submit {
+            border-radius: 30px;
+            padding: 10px 20px; /* Adjust padding for better centering */
+            text-align: center; /* Ensure text is centered */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .field-icon {
+            top: 50%;
+            transform: translateY(-50%);
+            left: 20px; /* Change from right to left */
+            right: auto; /* Reset the right property */
+            cursor: pointer;
+        }
+
+        .heading-section {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            color: #333;
+        }
+        .social .btn {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+    </style>
+
+    <script>
+        $(".toggle-password").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+    </script>
+</body>
+{% endblock %}

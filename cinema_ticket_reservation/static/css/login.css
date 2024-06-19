@@ -1,0 +1,66 @@
+/* login.css */
+
+body.login-body {
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../images/bg02.png');
+    background-size: 40%;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.heading-section {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    height: 45px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    padding-right: 35px;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: none;
+}
+
+.btn-primary.submit {
+    background: #007bff;
+    border: none;
+    height: 45px;
+    border-radius: 5px;
+}
+
+.social .btn {
+    width: 48%;
+    margin: 5px 1%;
+    font-size: 14px;
+}
+
+.social .btn span {
+    margin-right: 5px;
+}
+
+.field-icon {
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

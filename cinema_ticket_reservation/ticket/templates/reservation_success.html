@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Reservation Success{% endblock %}
+{%load static%}
+{% block content %}
+<body>
+  <div class="container mt-5">
+    <h1 class="my-4 text-center text-primary">Reservation Success</h1>
+
+    <div class="card mb-3 bg-light">
+      <div class="card-body">
+        <h5 class="card-title text-info">Your reservation for the following schedule has been successful:</h5>
+        <p class="card-text"><strong class="text-success">Hall:</strong> {{ schedule.hall_id }}</p>
+        <p class="card-text"><strong class="text-success">Time:</strong> {{ schedule.time }}</p>
+      </div>
+    </div>
+
+    <div class="card mb-3 bg-light">
+      <div class="card-body">
+        <h5 class="card-title text-info">Selected Seats:</h5>
+        <ul class="list-group">
+          {% for seat in selected_seats %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>Row: {{ seat.row }}, Column: {{ seat.column }}</span>
+              <span class="badge bg-primary rounded-pill">Selected</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mb-3 bg-light">
+      <div class="card-body">
+        <h5 class="card-title text-info">Your Ticket Details:</h5>
+        <p class="card-text"><strong class="text-success">Ticket ID:</strong> {{ ticket.Ticket_ID }}</p>
+        <p class="card-text"><strong class="text-success">Seats:</strong>
+          {% for seat in ticket.seats.all %}
+            {{ seat.row }}-{{ seat.column }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </p>
+        <p class="card-text"><strong class="text-success">Hall:</strong> {{ ticket.schedule_id.hall_id }}</p>
+        <p class="card-text"><strong class="text-success">Time:</strong> {{ ticket.schedule_id.time }}</p>
+        <p class="card-text"><strong class="text-success">Reserved On:</strong> {{ ticket.time_on_reserve }}</p>
+      </div>
+    </div>
+
+    <p class="lead text-center text-primary">Thank you for choosing our service!</p>
+  </div>
+</body>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // Add some jQuery enhancements for a better user experience
+    $(document).ready(function() {
+      // Example: Fade in the cards
+      $('.card').fadeIn(1000);
+
+      // Example: Add a click event to the list items for animation
+      $('.list-group-item').click(function() {
+        $(this).toggleClass('active');
+      });
+    });
+  </script>
+{% endblock %}

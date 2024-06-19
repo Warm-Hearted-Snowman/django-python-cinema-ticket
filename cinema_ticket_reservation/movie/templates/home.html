@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Movies List{% endblock %}
+
+{% load static %}
+
+{% block home %}
+<!-- Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- AOS CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'css/home_styles.css' %}">
+{% endblock %}
+
+{% block content2 %}
+<!-- Header -->
+<header class="jumbotron text-center bg-primary text-white" data-aos="fade-up">
+    <a href="#movies" class="btn btn-light btn-lg">فیلم ها</a>
+    <!-- Movie Carousel -->
+    <div id="movieCarousel" class="carousel slide mt-4" data-ride="carousel">
+        <div class="carousel-inner">
+            {% for movie in best_movies %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <a href="{% url 'movie:movie_detail' movie_id=movie.Movie_ID %}">
+                <img src="{{ movie.image.url }}" class="d-block w-100" alt="{{ movie.title }}" style="width: 792px; height: 400px; object-fit: cover; object-position: top;">
+                </a>
+                <div class="carousel-caption d-none d-md-block">
+                    <a href="{% url 'movie:movie_detail' movie_id=movie.Movie_ID %}">{{ movie.title }}</a>
+                    <p>{{ movie.description|slice:":100" }}{% if movie.description|length > 100 %}...{% endif %}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#movieCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#movieCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</header>
+
+<!-- Movies Section -->
+<section id="movies" class="container mt-5">
+    <div class="row">
+        <div class="col-md-9" data-aos="fade-right">
+            <h2 class="text-center mb-4">بهترین ها</h2>
+            <div class="row">
+                <!-- Movie Card -->
+                {% for movie in best_movies %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <img src="{{ movie.image.url }}" class="card-img-top" alt="Movie 1">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text">{{ movie.description|slice:":50" }}{% if movie.description|length > 50 %}...{% endif %}</p>
+                            <a href="{% url 'movie:movie_detail' movie_id=movie.Movie_ID %}" class="btn btn-primary">مشاهده جزئیات</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- Repeat similar blocks for more movies -->
+            </div>
+        </div>
+
+        <!-- Most Rated Movies Side Banner -->
+        <div class="col-md-3">
+            <section id="most-rated" class="bg-light p-3 rounded shadow-sm" data-aos="fade-left">
+                <h4 class="text-center mb-3">پر فروش ترین ها</h4>
+                {% for movie in box_office %}
+                <div class="movie-box mb-3">
+                    <a href="{% url 'movie:movie_detail' movie_id=movie.Movie_ID %}">
+                    <img src="{{ movie.image.url }}" class="img-thumbnail float-left mr-2" alt="Rated Movie 1"
+                         style="width: 60px; height: 60px;">
+                    </a>
+                    <div>
+                        <h6>{{ movie.title }}</h6>
+                        <p class="small mb-0"> {{ movie.ticket_office }} </p>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- Repeat similar blocks for more movies -->
+            </section>
+        </div>
+    </div>
+</section>
+
+<!-- Comedy Movies Section -->
+<section id="comedy-movies" class="container mt-5 mb-5">
+    <h2 class="text-center mb-4" data-aos="fade-up">کمدی</h2>
+    <div class="row">
+        <!-- Movie Card -->
+        {% for movie in comedy_movies %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm" data-aos="zoom-in">
+                <img src="{{ movie.image.url }}" class="card-img-top" alt="Comedy Movie 1">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.description|slice:":50" }}{% if movie.description|length > 50 %}...{% endif %}</p>
+                    <a href="{% url 'movie:movie_detail' movie_id=movie.Movie_ID %}" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Repeat similar blocks for more movies -->
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3">
+    <p>&copy; 2024 CinemaReservation. All rights reserved.</p>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<!-- Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+<!-- AOS JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<!-- Custom JS -->
+<script src="{% static 'js/home_scripts.js' %}"></script>
+<script>
+    AOS.init();
+</script>
+
+{% endblock %}

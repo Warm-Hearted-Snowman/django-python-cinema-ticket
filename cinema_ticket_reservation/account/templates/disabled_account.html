@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Disabled Account{% endblock %}
+
+{% block content %}
+    <h2>Disabled Account</h2>
+    <p>Your account has been disabled. Please contact support for further assistance.</p>
+    <p>If you believe this is an error, you can also try to <a href="{% url 'account:password_reset' %}">reset your password</a>.</p>
+{% endblock %}

@@ -1,0 +1,43 @@
+/* movies_list.css */
+.movie-card {
+    transition: transform 0.2s;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.movie-card .card-header {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.movie-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-info {
+    flex: 1;
+}
+
+.description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.images {
+    margin-top: 20px;
+}
+
+.images img {
+    width: 100%;
+    border-radius: 10px;
+}

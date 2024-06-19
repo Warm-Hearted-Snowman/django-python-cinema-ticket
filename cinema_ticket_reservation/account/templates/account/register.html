@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Create an account{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<body class="login-body">
+    <section class="ftco-section d-flex align-items-center min-vh-100" >
+        <div class="container" style="max-width: 800px; background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);background: url('{% static 'images/login_bg.webp' %}') no-repeat center center/cover;">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center mb-4">
+                    <h2 class="heading-section">ساخت اکانت جدید</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="login-wrap p-4 p-md-5 bg-light rounded shadow">
+                        <h3 class="mb-4 text-center">حساب جدید</h3>
+                        {% if messages %}
+                        <div class="alert alert-dismissible fade show" role="alert">
+                            <ul class="list-unstyled mb-0">
+                                {% for message in messages %}
+                                <li
+                                {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="{{ user_form.username.name }}" class="form-control" placeholder="نام کاربری" required aria-label="Username">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="{{ user_form.email.name }}" class="form-control" placeholder="ایمیل" required aria-label="Email">
+                            </div>
+                            <div class="form-group position-relative">
+                                <input id="password1" type="password" name="{{ user_form.password.name }}" class="form-control" placeholder="رمزعبور" required aria-label="Password">
+                                <span toggle="#password1" class="fa fa-fw fa-eye field-icon toggle-password position-absolute"></span>
+                            </div>
+                            <div class="form-group position-relative">
+                                <input id="password2" type="password" name="{{ user_form.confirm_password.name }}" class="form-control" placeholder="تایید رمز عبور" required aria-label="Confirm Password">
+                                <span toggle="#password2" class="fa fa-fw fa-eye field-icon toggle-password position-absolute"></span>
+                            </div>
+                            <div class="form-group mt-3">
+                                <button type="submit" class="form-control btn btn-primary submit px-3">ساخت اکانت</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <style>
+        .login-body {
+            background-color: #f8f9fa;
+        }
+        .login-wrap {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+        }
+        .form-control {
+            border-radius: 30px;
+            padding: 20px;
+        }
+        .submit {
+            border-radius: 30px;
+            padding: 10px 20px; /* Adjust padding for better centering */
+            text-align: center; /* Ensure text is centered */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .field-icon {
+            top: 50%;
+            transform: translateY(-50%);
+            left: 20px; /* Position icon to the left */
+            right: auto; /* Reset the right property */
+            cursor: pointer;
+        }
+        .heading-section {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            color: #333;
+        }
+    </style>
+
+    <script>
+        $(".toggle-password").click(function () {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+    </script>
+</body>
+{% endblock %}

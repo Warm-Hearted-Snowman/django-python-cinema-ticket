@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<body class="dashboard-body">
+    <section class="ftco-section d-flex align-items-center min-vh-100" style="background: url('{% static 'images/login_bg.webp' %}') no-repeat center center/cover;">
+        <div class="container" style="max-width: 1200px; background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);">
+            <div class="row mb-4">
+                <div class="col text-center">
+                    <h2 class="heading-section">داشبورد</h2>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-4 text-center">
+                    <a href="{% url 'account:userinfo' %}" class="btn btn-outline-primary btn-block">اطلاعات کاربر</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <a href="{% url 'account:user-tickets' %}" class="btn btn-outline-primary btn-block">بلیت‌های سفارش داده شده</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <a href="{% url 'account:logout' %}" class="btn btn-outline-danger btn-block">خروج</a>
+                </div>
+            </div>
+            <main role="main" class="col-12">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2 text-primary">بلیت‌های سفارش داده شده</h1>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 class="text-info">بلیت‌های رزرو شده شما</h3>
+                            {% if tickets %}
+                            {% for ticket in tickets %}
+                                {% if not ticket.is_canceled %}
+                                <div class="card mb-3 border-primary ticket" data-ticket-id="{{ ticket.Ticket_ID }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary">کد بلیت: {{ ticket.Ticket_ID }}</h5>
+                                        <p class="card-text"><strong class="text-success">صندلی‌ها:</strong> {{ ticket.seats.all|join:", " }}</p>
+                                        <p class="card-text"><strong class="text-success">برنامه:</strong> {{ ticket.schedule_id.cinema.title }} - {{ ticket.schedule_id.movie.title }}</p>
+                                        <p class="card-text"><strong class="text-success">زمان رزرو:</strong> {{ ticket.time_on_reserve|date:"F d, Y H:i" }}</p>
+                                        <button class="btn btn-danger cancel-ticket-btn" data-ticket-id="{{ ticket.Ticket_ID }}" data-cancel-url="{% url 'ticket:cancellation' %}">لغو بلیت</button>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% else %}
+                            <p class="text-muted">هنوز بلیتی رزرو نشده است.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    <style>
+        .dashboard-body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .heading-section {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            color: #333;
+        }
+        .btn-outline-primary, .btn-outline-danger {
+            border-radius: 30px;
+            padding: 10px 20px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+            function cancelTicket(ticketId, cancelUrl) {
+                $.ajax({
+                    type: 'POST',
+                    url: cancelUrl,
+                    data: {
+                        'ticket_id': ticketId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        alert('بلیت با کد ' + ticketId + ' لغو شد!');
+                        var ticketElement = $('.ticket[data-ticket-id="' + ticketId + '"]');
+                        if (ticketElement.length > 0) {
+                            ticketElement.hide();
+                        }
+                    },
+                    error: function(error) {
+                        alert('خطا در لغو بلیت با کد ' + ticketId);
+                    }
+                });
+            }
+
+            $('.cancel-ticket-btn').click(function() {
+                var ticketId = $(this).data('ticket-id');
+                var cancelUrl = $(this).data('cancel-url');
+                if (confirm('آیا مطمئن هستید که می‌خواهید بلیت با کد ' + ticketId + ' را لغو کنید؟')) {
+                    cancelTicket(ticketId, cancelUrl);
+                }
+            });
+        });
+    </script>
+</body>
+{% endblock %}
